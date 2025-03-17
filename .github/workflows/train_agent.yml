@@ -1,6 +1,5 @@
 name: Train LunarLander Agent
 
-# Trigger the workflow on push to the main branch or manually
 on:
   push:
     branches:
@@ -9,34 +8,27 @@ on:
 
 jobs:
   train:
-    runs-on: ubuntu-latest  # Use the latest Ubuntu environment
-
-    # Set a timeout of 5 hours and 55 minutes (21500 seconds)
+    runs-on: ubuntu-latest
     timeout-minutes: 355
 
     steps:
-      # Check out the repository
       - name: Checkout repository
         uses: actions/checkout@v3
 
-      # Set up Python
       - name: Set up Python
         uses: actions/setup-python@v4
         with:
-          python-version: '3.9'  # Use Python 3.9
+          python-version: '3.9'
 
-      # Install dependencies
       - name: Install dependencies
         run: |
           python -m pip install --upgrade pip
           pip install gymnasium numpy torch
 
-      # Train the agent
       - name: Train the agent
         run: |
           python train_agent.py --train --filename best_policy.pth
 
-      # Upload the trained model as an artifact
       - name: Upload trained model
         uses: actions/upload-artifact@v3
         with:
